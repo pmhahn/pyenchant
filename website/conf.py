@@ -30,7 +30,7 @@ import enchant
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.coverage", "sphinx_rtd_theme"]
 
 try:
-    import sphinxcontrib.spelling
+    import sphinxcontrib.spelling  # noqa F401
 except ImportError:
     pass
 else:
