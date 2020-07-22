@@ -38,11 +38,12 @@
 """
 
 import sys
+from typing import Optional
 
 from enchant.checker import SpellChecker
 
 try:
-    get_input = raw_input  # Python 2.x
+    get_input = raw_input  # type: ignore # Python 2.x
 except NameError:
     get_input = input  # Python 3.x
 
@@ -63,7 +64,7 @@ colors = {
 }
 
 
-def color(string, color="normal", prefix=""):
+def color(string: str, color: str = "normal", prefix: str = "") -> str:
     """
     Change text color for the Linux terminal.
 
@@ -79,19 +80,19 @@ def color(string, color="normal", prefix=""):
         return prefix + string
 
 
-def success(string):
+def success(string: str) -> str:
     return "[" + color("+", color="green") + "] " + string
 
 
-def error(string):
+def error(string: str) -> str:
     return "[" + color("!", color="red") + "] " + string
 
 
-def warning(string):
+def warning(string: str) -> str:
     return "[" + color("*", color="yellow") + "] " + string
 
 
-def info(string):
+def info(string: str) -> str:
     return "[" + color(".", color="blue") + "] " + string
 
 
@@ -106,17 +107,17 @@ class CmdLineChecker:
 
     _DOC_ERRORS = ["stdout", "stdin"]
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._stop = False
-        self._checker = None
+        self._checker = None  # type: Optional[SpellChecker]
 
-    def set_checker(self, chkr):
+    def set_checker(self, chkr: SpellChecker) -> None:
         self._checker = chkr
 
-    def get_checker(self, chkr):
+    def get_checker(self, chkr: SpellChecker) -> Optional[SpellChecker]:
         return self._checker
 
-    def run(self):
+    def run(self) -> None:
         """Run the spellchecking loop."""
         self._stop = False
         for err in self._checker:
@@ -129,7 +130,7 @@ class CmdLineChecker:
             if self._stop:
                 break
 
-    def print_error(self):
+    def print_error(self) -> None:
         """print the spelling error to the console.
 
         Prints the misspelled word along with 100 characters of
@@ -146,7 +147,7 @@ class CmdLineChecker:
         print([info("")])
 
     @staticmethod
-    def _build_context(text, error_word, error_start):
+    def _build_context(text: str, error_word: str, error_start: int) -> str:
         """creates the context line.
 
         This function will search forward and backward
@@ -159,7 +160,7 @@ class CmdLineChecker:
             error_word, color(error_word, color="red")
         )
 
-    def print_suggestions(self):
+    def print_suggestions(self) -> None:
         """Prints out the suggestions for a given error.
 
         This function will add vertical pipes to separate choices
@@ -186,7 +187,7 @@ class CmdLineChecker:
                 )
         print([info("HOW ABOUT:"), result])
 
-    def print_help(self):
+    def print_help(self) -> None:
         print(
             [
                 info(
@@ -276,7 +277,7 @@ class CmdLineChecker:
         print([info("----------------------------------------------------")])
         self.print_suggestions()
 
-    def read_command(self):
+    def read_command(self) -> bool:
         cmd = get_input(">> ")
         cmd = cmd.strip()
 
@@ -339,7 +340,9 @@ class CmdLineChecker:
         print([warning("Badly formatted command (try 'help')")])
         return False
 
-    def run_on_file(self, infile, outfile=None, enc=None):
+    def run_on_file(
+        self, infile: str, outfile: Optional[str] = None, enc: Optional[str] = None
+    ) -> None:
         """Run spellchecking on the named file.
         This method can be used to run the spellchecker over the named file.
         If <outfile> is not given, the corrected contents replace the contents
@@ -370,10 +373,10 @@ class CmdLineChecker:
         outF.write(outStr)
         outF.close()
 
-    run_on_file._DOC_ERRORS = ["outfile", "infile", "outfile", "stdout"]
+    run_on_file._DOC_ERRORS = ["outfile", "infile", "outfile", "stdout"]  # type: ignore
 
 
-def _run_as_script():
+def _run_as_script() -> None:
     """Run the command-line spellchecker as a script.
     This function allows the spellchecker to be invoked from the command-line
     to check spelling in a file.
