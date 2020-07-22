@@ -230,6 +230,7 @@ class wxSpellCheckerDialog(wx.Dialog):
 
     def OnAdd(self, evt: Any) -> None:
         """Callback for the "add" button."""
+        assert self._checker
         self._checker.add()
         self.Advance()
 
@@ -249,11 +250,13 @@ class wxSpellCheckerDialog(wx.Dialog):
 
     def OnIgnoreAll(self, evt: Any) -> None:
         """Callback for the "ignore all" button."""
+        assert self._checker
         self._checker.ignore_always()
         self.Advance()
 
     def OnReplace(self, evt: Any) -> None:
         """Callback for the "replace" button."""
+        assert self._checker
         repl = self.GetRepl()
         if repl:
             self._checker.replace(repl)
@@ -261,6 +264,7 @@ class wxSpellCheckerDialog(wx.Dialog):
 
     def OnReplaceAll(self, evt: Any) -> None:
         """Callback for the "replace all" button."""
+        assert self._checker
         repl = self.GetRepl()
         self._checker.replace_always(repl)
         self.Advance()

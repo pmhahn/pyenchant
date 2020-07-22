@@ -119,6 +119,7 @@ class CmdLineChecker:
 
     def run(self) -> None:
         """Run the spellchecking loop."""
+        assert self._checker
         self._stop = False
         for err in self._checker:
             self.error = err
@@ -352,6 +353,7 @@ class CmdLineChecker:
         file's contents into a unicode string.  The output will be written
         in the same encoding.
         """
+        assert self._checker
         inStr = "".join(open(infile, "r").readlines())
         if enc is not None:
             inStr = inStr.decode(enc)
