@@ -354,9 +354,7 @@ class CmdLineChecker:
         in the same encoding.
         """
         assert self._checker
-        inStr = "".join(open(infile, "r").readlines())
-        if enc is not None:
-            inStr = inStr.decode(enc)
+        inStr = open(infile, "r", encoding=enc).read()
         self._checker.set_text(inStr)
         begin_msg = "Beginning spell check of %s" % infile
         print([info(begin_msg)])
@@ -364,14 +362,12 @@ class CmdLineChecker:
         self.run()
         print([success("Completed spell check of %s" % infile)])
         outStr = self._checker.get_text()
-        if enc is not None:
-            outStr = outStr.encode(enc)
         if outfile is None:
-            outF = open(infile, "w")
+            outF = open(infile, "w", encoding=enc)
         elif outfile == "-":
             outF = sys.stdout
         else:
-            outF = open(outfile, "w")
+            outF = open(outfile, "w", encoding=enc)
         outF.write(outStr)
         outF.close()
 
